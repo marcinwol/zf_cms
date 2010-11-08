@@ -5,7 +5,7 @@
  * and open the template in the editor.
  */
 
-class Zend_View_Helper_LoadSkin extends Zend_View_Helper_Abstract {
+class My_View_Helper_LoadSkin extends Zend_View_Helper_Abstract {
 
     /**
      * Returns a links to css of a new skin.
