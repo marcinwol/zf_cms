@@ -12,6 +12,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
       
         $resourceLoader->addResourceType('view', 'views/helpers/','My_View_Helper_');
         $resourceLoader->addResourceType('form', 'forms/','My_Form_');
+        $resourceLoader->addResourceType('model', 'models/','My_Model_');
           
         $autoLoader->pushAutoloader($resourceLoader);
        
