@@ -3,5 +3,6 @@
     <stylesheets>
         <stylesheet>layout.css</stylesheet>
         <stylesheet>text.css</stylesheet>
+        <stylesheet>form.css</stylesheet>
     </stylesheets>
 </skin>
