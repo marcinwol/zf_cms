@@ -22,11 +22,11 @@ class My_Model_Bug extends Zend_Db_Table_Abstract {
      * @param array $bugData
      * @return int last ID
      */
-    public function createBug(array $bugData ) {
+    public function createBug(array $bugData) {
 
         // create a new row in the bugs table
         $row = $this->createRow();
-       
+
         // set the row data
         $row->author = $bugData['author'];
         $row->email = $bugData['email'];
@@ -37,13 +37,27 @@ class My_Model_Bug extends Zend_Db_Table_Abstract {
         $row->status = $bugData['status'];
 
         // save the new row
-       $id =  $row->save();
+        $id = $row->save();
 
-        return  $id;
+        return $id;
     }
 
-    public function fetchBugs() {
+    public function fetchBugs(
+        array $filters = array(), $sortField = null, $limit = null) {
+
         $select = $this->select();
+
+        //add any filters
+        if (count($filters) > 0) {
+            foreach ($filters as $field => $filter) {
+                $select->where($field . ' = ?', $filter);
+            }
+        }
+
+        if (null != $sortField) {
+            $select->order($sortField);
+        }
+
         return $this->fetchAll($select);
     }
 

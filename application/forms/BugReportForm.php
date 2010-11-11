@@ -14,7 +14,7 @@ class My_Form_BugReportForm extends Zend_Form {
     //put your code here
 
     /**
-     * @todo Finish BugReportForm
+     * 
      */
     public function init() {
         // add element: author textbox
