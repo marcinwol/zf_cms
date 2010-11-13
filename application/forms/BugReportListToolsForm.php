@@ -46,6 +46,14 @@ class My_Form_BugReportListToolsForm extends Zend_Form {
         // add the element to the form
         $this->addElement($filter);
 
+        // add limit imput
+        $limit = $this->createElement('text', 'limit');
+        $limit->setLabel('Limit value (no of rows):');
+        $limit->setValidators(array(new Zend_Validate_Int()));
+        $limit->setAttrib('size', 40);
+
+        $this->addElement($limit);
+
         // add element: submit button
         $this->addElement('submit', 'submit', array('label' => 'Update List'));
     }

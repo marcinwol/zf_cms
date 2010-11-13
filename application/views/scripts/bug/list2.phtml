@@ -1,0 +1,23 @@
+<h2>Current Bugs (list2 with paginator)</h2>
+<?php echo $this->listToolsForm; ?>
+
+<?php
+echo $this->paginationControl($this->paginator,
+        'Sliding',
+        '/partials/pagination-control.phtml',
+        array('params'=>$this->params));
+?>
+
+
+<table class='spreadsheet' cellspacing='0'>
+    <tr>
+        <th>&nbsp;</th>
+        <th>Date</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>URL</th>
+        <th>Submitter</th>
+        <th>Description</th>
+    </tr>
+<?php echo $this->partialLoop('bug/table-row.phtml', $this->paginator);  ?>
+</table>

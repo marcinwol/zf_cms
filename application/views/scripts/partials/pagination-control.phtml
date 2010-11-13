@@ -1,0 +1,46 @@
+<?php if ($this->pageCount): 
+     unset($this->params['page']);
+      unset($this->params['submit']);
+        ?>
+    <div class="paginationControl">
+        <!-- Previous page link -->
+    <?php if (isset($this->previous)): ?>
+        <?php //Zend_Debug::dump(
+                //array_merge(array('page' => $this->previous),$this->params)
+                  //      );?>
+        <a href="<?php
+        echo $this->url(
+                array_merge(array('page' => $this->previous),$this->params)
+        ); ?>">
+         &lt; Previous
+     </a> |
+    <?php else: ?>
+            <span class="disabled">&lt; Previous</span> |
+    <?php endif; ?>
+
+            <!-- Numbered page links -->
+    <?php foreach ($this->pagesInRange as $page): ?>
+    <?php if ($page != $this->current): ?>
+                    <a href="<?php
+                    echo $this->url(
+                     array_merge($this->params, array('page' => $page))
+                    ); ?>">
+           <?php echo $page; ?>
+             </a> |
+    <?php else: ?>
+    <?php echo $page; ?> |
+    <?php endif; ?>
+    <?php endforeach; ?>
+
+                        <!-- Next page link -->
+    <?php if (isset($this->next)): ?>
+                            <a href="<?php echo $this->url(
+ array_merge(array('page' => $this->next),$this->params)
+                                    ); ?>">
+                                Next &gt;
+                            </a>
+    <?php else: ?>
+                                <span class="disabled">Next &gt;</span>
+    <?php endif; ?>
+                            </div>
+<?php endif; ?>

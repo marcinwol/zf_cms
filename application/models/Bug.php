@@ -43,7 +43,37 @@ class My_Model_Bug extends Zend_Db_Table_Abstract {
     }
 
     public function fetchBugs(
-        array $filters = array(), $sortField = null, $limit = null) {
+    array $filters = array(), $sortField = null, $limit = null) {
+
+        $select = $this->select();
+
+        //add any filters
+        if (count($filters) > 0) {
+            foreach ($filters as $field => $filter) {
+                $select->where($field . ' = ?', $filter);
+            }
+        }
+
+        if ($limit) {
+            $select->limit($limit);
+        }
+
+        if (null != $sortField) {
+            $select->order($sortField);
+        }
+
+        return $this->fetchAll($select);
+    }
+
+    /**
+     * Return a paginator of bugs.
+     *
+     * @param array $filters
+     * @param string $sortField
+     * @return Zend_Paginator_Adapter_DbTableSelect
+     */
+    public function fetchPaginatorAdapter(
+    array $filters = array(), $sortField = null) {
 
         $select = $this->select();
 
@@ -58,7 +88,9 @@ class My_Model_Bug extends Zend_Db_Table_Abstract {
             $select->order($sortField);
         }
 
-        return $this->fetchAll($select);
+        // create a new instance of the paginator adapter and return it
+        $adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
+        return $adapter;
     }
 
     protected function _getTimeStamp() {
