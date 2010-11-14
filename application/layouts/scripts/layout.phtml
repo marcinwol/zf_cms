@@ -3,14 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <?php $this->headTitle();?>
+        <?php $this->headTitle(); ?>
 
 
-        <?php  echo $this->headScript(); ?>
+        <?php echo $this->headScript(); ?>
 
-        <?php 
+        <?php
         //echo $this->headLink()->appendStylesheet($this->baseUrl() . '/css/layout.css');
-           echo $this->loadSkin($this->skin);
+        echo $this->loadSkin($this->skin);
         ?>
 
     </head>
@@ -19,30 +19,35 @@
     <body>
         <div id="pageWrapper">
             <div id="header">
-                <h1><a href="<?php echo $this->baseUrl()?>">
+                <h1><a href="<?php echo $this->baseUrl() ?>">
                         Zend Framework CMS</a></h1>
             </div>
             <div id="nav">
-                <?php echo $this->layout()->nav; ?>&nbsp;
+
+                <a href="<?php
+        echo $this->url(
+                array('controller' => 'bug', 'action' => 'index'));
+        ?>">Bugs</a>
+<?php echo $this->layout()->nav; ?>&nbsp;
             </div>
             <div id="sidebar">
                 <div id="subNav">
-                    <?php echo $this->layout()->subNav; ?>&nbsp;
+<?php echo $this->layout()->subNav; ?>&nbsp;
                 </div>
                 <div id="adminMenu">
-                    <?php echo $this->layout()->adminMenu; ?>&nbsp;
+<?php echo $this->layout()->adminMenu; ?>&nbsp;
                 </div>
                 <div id="userForm">
-                    <?php echo $this->layout()->userForm; ?>&nbsp;
+<?php echo $this->layout()->userForm; ?>&nbsp;
                 </div>
             </div>
             <div id="main">
-                <?php echo $this->layout()->content ?>&nbsp;
-                </div>
-                <div id="footer">
-                    <p><em>
+<?php echo $this->layout()->content ?>&nbsp;
+            </div>
+            <div id="footer">
+                <p><em>
                         Powered by the Zend Framework
-                        </em>
+                    </em>
                 </p>
             </div>
         </div>

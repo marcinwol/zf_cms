@@ -42,6 +42,38 @@ class My_Model_Bug extends Zend_Db_Table_Abstract {
         return $id;
     }
 
+    /**
+     * Update a row into table.
+     *
+     * @param int $bugID
+     * @param array $bugData
+     * @return int last ID
+     */
+    public function updateBug($bugID, array $bugData) {
+
+        // create a new row in the bugs table
+        $row = $this->find($bugID)->current();
+
+        if ($row) {
+
+            // set the row data
+            $row->author = $bugData['author'];
+            $row->email = $bugData['email'];
+            $row->date = $this->_getTimeStamp();
+            $row->url = $bugData['url'];
+            $row->description = $bugData['description'];
+            $row->priority = $bugData['priority'];
+            $row->status = $bugData['status'];
+
+            // save the new row
+            $id = $row->save();
+            return $id;
+        } else {
+            throw new Zend_Exception(
+                    "Update function failed; could not find row!");
+        }
+    }
+
     public function fetchBugs(
     array $filters = array(), $sortField = null, $limit = null) {
 
@@ -91,6 +123,17 @@ class My_Model_Bug extends Zend_Db_Table_Abstract {
         // create a new instance of the paginator adapter and return it
         $adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
         return $adapter;
+    }
+
+    public function deleteBug($id) {
+// find the row that matches the id
+        $row = $this->find($id)->current();
+        if ($row) {
+            $row->delete();
+            return true;
+        } else {
+            throw new Zend_Exception("Delete function failed; could not find row!");
+        }
     }
 
     protected function _getTimeStamp() {

@@ -25,6 +25,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 
         // register my helpers
         $view->registerHelper(new My_View_Helper_LoadSkin(), 'loadSkin');
+        $view->registerHelper(
+                new My_View_Helper_ShowConfirmation(), 'showConfirmation');
 
         // Add it to the ViewRenderer
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper(

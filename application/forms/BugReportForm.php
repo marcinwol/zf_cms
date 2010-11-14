@@ -86,6 +86,21 @@ class My_Form_BugReportForm extends Zend_Form {
         $this->addElement('submit', 'submit', array('label' => 'Submit'));
     }
 
+    /**
+     * Add a hidden field to the form.
+     *
+     * @param int $value set a value of hidden id field
+     */
+    public function addHiddenID($value = null) {
+        $hiddenID = $this->createElement('hidden','id');
+
+        if (is_int($value)) {
+            $hiddenID->setValue($value);
+        } 
+
+        $this->addElement($hiddenID);
+    }
+
 }
 
 ?>

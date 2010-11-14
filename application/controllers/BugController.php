@@ -22,7 +22,7 @@ class BugController extends Zend_Controller_Action {
                 $result = $bugModel->createBug($formBugReport->getValues());
 
                 if ($result) {
-                    $this->_redirect('/bug/confirm');
+                    return $this->_redirect('/bug/confirm/op/s');
                 }
             }
         }
@@ -34,7 +34,8 @@ class BugController extends Zend_Controller_Action {
     }
 
     public function confirmAction() {
-        // action body
+        $operation = $this->_request->getParam('op', null);
+        $this->view->operation = $operation;
     }
 
     /**
@@ -85,10 +86,13 @@ class BugController extends Zend_Controller_Action {
     /**
      * A paginator based version of listAction
      * @todo Finish list2Action.
+     * 
+     * 
      */
     public function list2Action() {
         $listToolsForm = new My_Form_BugReportListToolsForm();
-        $listToolsForm->setAction($this->view->baseUrl() . '/bug/list2');
+        $listToolsForm->setAction(
+                $this->view->baseUrl() . '/bug/list2');
         $listToolsForm->setMethod('post');
         $this->view->listToolsForm = $listToolsForm;
 
@@ -109,7 +113,7 @@ class BugController extends Zend_Controller_Action {
         $listToolsForm->getElement('sort')->setValue($sort);
         $listToolsForm->getElement('filter_field')->setValue($filterField);
         $listToolsForm->getElement('filter')->setValue($filterValue);
-        
+
         // fetch the bug paginator adapter
         $bugModels = new My_Model_Bug();
 
@@ -131,6 +135,50 @@ class BugController extends Zend_Controller_Action {
         $this->view->params = $this->_request->getParams();
 
         // Zend_Debug::dump($this->_request->getParams());
+    }
+
+    public function editAction() {
+        // action body
+        $bugModel = new My_Model_Bug();
+
+        $bugReportForm = new My_Form_BugReportForm();
+        $bugReportForm->setAction(
+                $this->view->baseUrl() . '/bug/edit')->setMethod('post');
+
+        $bugReportForm->addHiddenID();
+
+        if ($this->getRequest()->isPost()) {
+            if ($bugReportForm->isValid($_POST)) {
+                $bugValues = $bugReportForm->getValues();
+
+                $result = $bugModel->updateBug((int) $bugValues['id'], $bugValues);
+
+                if ($result) {
+                  return  $this->_redirect('/bug/confirm/op/e');
+                }
+            }
+        } else {
+            $bugID = $this->_request->getParam('id', null);
+
+            $bug = $bugModel->find((int) $bugID)->current();
+            $bugReportForm->populate($bug->toArray());
+
+
+            //format the date field
+            $bugReportForm->getElement('date')->setValue(date('m-d-Y', $bug->date));
+        }
+
+
+
+        $this->view->form = $bugReportForm;
+    }
+
+    public function deleteAction() {
+        
+        $bugModel = new My_Model_Bug();
+        $id = $this->_request->getParam('id');
+        $bugModel->deleteBug($id);
+        return $this->_redirect('/bug/confirm/op/d');
     }
 
 }
