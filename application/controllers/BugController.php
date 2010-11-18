@@ -85,7 +85,6 @@ class BugController extends Zend_Controller_Action {
 
     /**
      * A paginator based version of listAction
-     * @todo Finish list2Action.
      * 
      * 
      */
@@ -107,8 +106,6 @@ class BugController extends Zend_Controller_Action {
         } else {
             $filter = array();
         }
-
-
 
         $listToolsForm->getElement('sort')->setValue($sort);
         $listToolsForm->getElement('filter_field')->setValue($filterField);
