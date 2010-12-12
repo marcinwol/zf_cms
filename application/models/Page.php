@@ -13,24 +13,20 @@
 class My_Model_Page extends Zend_Db_Table_Abstract {
 
     protected $_name = 'pages';
-
     /**
      * Page can have many Nodes, thus it dependes on them.
      *
      * @var array
      */
     protected $_dependentTables = array('My_Model_ContentNode');
-
-
-
-      /**
+    /**
      * Page can reference other page.
      *
      * @var array
      */
-    protected $_referenceMap    = array(
+    protected $_referenceMap = array(
         'Page' => array(
-           'columns' => 'parent_id',
+            'columns' => 'parent_id',
             'refTableClass' => 'My_Model_Page',
             'refColumns' => 'id',
             'onDelete' => self::CASCADE,
@@ -64,7 +60,7 @@ class My_Model_Page extends Zend_Db_Table_Abstract {
             unset($data['name']);
             unset($data['parent_id']);
             unset($data['_pageModel']);
-            
+
 
             // set each of the other fields in the content_nodes table
             if (count($data) > 0) {
@@ -86,6 +82,36 @@ class My_Model_Page extends Zend_Db_Table_Abstract {
             return true;
         } else {
             throw new Zend_Exception("Delete function failed; could not find page!");
+        }
+    }
+
+    
+    /**
+     * Return most recent pages.
+     * 
+     * @param int $count
+     * @param string $namespace
+     * @return array My_CMS_Content_Item_Page 
+     */
+    public function getRecentPages($count = 10, $namespace = 'page') {
+        $select = $this->select();
+
+        $select->order = 'date_created DESC';
+        $select->where('namespace = ?', $namespace);
+
+        $select->limit($count);
+        $results = $this->fetchAll($select);
+
+
+        if ($results->count() > 0) {
+        //cycle through the results, opening each page
+            $pages = array();
+            foreach ($results as $result) {
+                $pages[$result->id] = new My_CMS_Content_Item_Page($result->id);
+            }
+            return $pages;
+        } else {
+            return null;
         }
     }
 

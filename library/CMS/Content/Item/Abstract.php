@@ -30,7 +30,7 @@ abstract class My_CMS_Content_Item_Abstract {
 
     public function loadPageObject($id) {
         $this->id = $id;
-        $row = $this->getInnerRow();
+        $row = $this->_getInnerRow();
 
         if ($row) {
             if ($row->namespace != $this->_namespace) {

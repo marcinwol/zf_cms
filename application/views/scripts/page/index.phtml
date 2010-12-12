@@ -1,1 +1,29 @@
-<br /><br /><center>View script for controller <b>Page</b> and script/action name <b>index</b></center>
+<h2>Featured Content</h2>
+<?php
+if ($this->featuredItems):
+    foreach ($this->featuredItems as $page):
+?>
+        <div class='featuredItem'>
+            <h3><a href='<?php echo $this->baseUrl(); ?>/page/open/id/<?php echo $page->id; ?>'>
+            <?php echo $page->headline ?></a></h3>
+    <img src='<?php echo $page->image; ?>' alt='<?php echo $page->headline ?>' />
+    <p><?php echo $page->description; ?></p>
+    <br style='clear:left;' />
+</div>
+<?php
+            endforeach;
+        endif;
+
+        if ($this->recentPages):
+?>
+            <div class='recentPages'>
+                <h3>More Pages</h3>
+                <ul>
+        <?php foreach ($this->recentPages as $page) {
+        ?>
+                <li><a href='<?php echo $this->baseUrl(); ?>/page/open/id/<?php echo $page->id; ?>'>
+                <?php echo $page->headline ?></a></li>
+        <?php } ?>
+        </ul>
+    </div>
+<?php endif; ?>
