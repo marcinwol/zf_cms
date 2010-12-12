@@ -63,10 +63,12 @@ class My_Model_Page extends Zend_Db_Table_Abstract {
             unset($data['id']);
             unset($data['name']);
             unset($data['parent_id']);
+            unset($data['_pageModel']);
+            
 
             // set each of the other fields in the content_nodes table
             if (count($data) > 0) {
-                $mdlContentNode = new Model_ContentNode();
+                $mdlContentNode = new My_Model_ContentNode();
                 foreach ($data as $key => $value) {
                     $mdlContentNode->setNode($id, $key, $value);
                 }

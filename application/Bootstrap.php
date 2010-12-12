@@ -10,11 +10,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                     'namespace' => '',
                 ));
 
-        $resourceLoader->addResourceType('view', 'views/helpers/', 'My_View_Helper_');
+        $resourceLoader->addResourceType('view', 'views/helpers/',
+                   'My_View_Helper_');
         $resourceLoader->addResourceType('form', 'forms/', 'My_Form_');
         $resourceLoader->addResourceType('model', 'models/', 'My_Model_');
 
+
         $autoLoader->pushAutoloader($resourceLoader);
+
+
+        // add 'My_' namespace for library/CSM
+        $resourceLoader_cms = new Zend_Loader_Autoloader_Resource(array(
+                    'basePath' => APPLICATION_PATH . '/../library',
+                    'namespace' => 'My_',
+                ));
+
+        $resourceLoader_cms->addResourceType('cms', 'CMS/', 'CMS_');
+        //var_dump($resourceLoader_cms->getResourceTypes());
+        $autoLoader->pushAutoloader($resourceLoader_cms);
+
     }
 
     protected function _initView() {

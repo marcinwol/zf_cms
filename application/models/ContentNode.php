@@ -9,7 +9,7 @@ class My_Model_ContentNode extends Zend_Db_Table_Abstract {
     /*
      * Table name
      */
-    protected $_name = 'content_node';
+    protected $_name = 'content_nodes';
 
 
     /**
@@ -43,6 +43,7 @@ class My_Model_ContentNode extends Zend_Db_Table_Abstract {
             $row->page_id = $pageId;
             $row->node = $node;
         }
+
         //set the content
         $row->content = $value;
         return $row->save();

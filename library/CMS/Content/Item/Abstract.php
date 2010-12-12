@@ -10,7 +10,7 @@
  * @todo Test this class (p. 87)
  * @author marcin
  */
-abstract class My_CMS_Content_Item_Abstract_Abstract {
+abstract class My_CMS_Content_Item_Abstract {
     //put your code here
 
     const NO_SETTER = 'setter method does not exist';
