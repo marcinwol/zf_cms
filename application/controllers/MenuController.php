@@ -61,16 +61,39 @@ class MenuController extends Zend_Controller_Action {
     }
 
     public function deleteAction() {
-
         $id = $this->_request->getParam('id', null);
 
         if (is_null($id)) {
             return $this->_redirect('/menu/index');
         }
-        
+
         $modelMenu = new My_Model_Menu();
         $modelMenu->deleteMenu($id);
         return $this->_redirect('/menu/index');
+    }
+
+    public function renderAction() {
+        $menuID = $this->_request->getParam('menu', null);
+        $mdlMenuItems = new My_Model_MenuItem ( );
+        $menuItems = $mdlMenuItems->getItemsByMenu($menuID);
+
+        if (count($menuItems) > 0) {
+            foreach ($menuItems as $item) {
+                $label = $item->label;
+                if (!empty($item->link)) {
+                    $uri = $item->link;
+                } else {
+                    $uri = $this->view->baseUrl() . '/page/open/id/' . $item->page_id;                    
+                }
+                $itemArray[] = array(
+                    'label' => $label,
+                    'uri' => $uri
+                    );
+            }
+            $container = new Zend_Navigation($itemArray);
+            $this->view->navigation()->setContainer($container);
+
+        }
     }
 
 }

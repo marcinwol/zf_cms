@@ -71,6 +71,7 @@ class My_Model_Menu extends Zend_Db_Table_Abstract {
         return $this->find($id)->current();
     }
 
+ 
 }
 
 ?>

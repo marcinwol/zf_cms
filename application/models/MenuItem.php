@@ -26,8 +26,13 @@ class My_Model_MenuItem extends Zend_Db_Table_Abstract {
         )
     );
 
+    /**
+     * Return menuitems in a given menu
+     *
+     * @param int $menuId
+     * @return Zend_Db_Table_Rowset | null Menu items
+     */
     public function getItemsByMenu($menuId) {
-
 
         $select = $this->select();
         $select->where("menu_id = ?", $menuId);
@@ -149,6 +154,28 @@ class My_Model_MenuItem extends Zend_Db_Table_Abstract {
             throw new Zend_Exception("Error loading menu item");
         }
     }
+
+
+       public function getMenuItemArray($menuID) {
+        $menuItems = $this->getItemsByMenu($menuID);
+        $itemArray = array();
+        if (count($menuItems) > 0) {
+            foreach ($menuItems as $item) {
+                $label = $item->label;
+                if (!empty($item->link)) {
+                    $uri = $item->link;
+                } else {
+                    $uri = '/page/open/id/' . $item->page_id;
+                }
+                $itemArray[] = array(
+                    'label' => $label,
+                    'uri' => $uri
+                );
+            }
+        }
+        return $itemArray;
+    }
+
 
 }
 
