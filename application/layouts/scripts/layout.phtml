@@ -35,7 +35,7 @@
         ?>">List page</a>
 
 
-                 <?php echo "asdfs". $this->navigation()->breadcrumbs(); ?>
+                 <?php echo "asdfs".  $this->navigation()->breadcrumbs()->setLinkLast(true)->setSeparator(" : "); ?>
 
 <?php echo $this->layout()->nav; ?>&nbsp;
             </div>

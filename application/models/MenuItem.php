@@ -64,7 +64,7 @@ class My_Model_MenuItem extends Zend_Db_Table_Abstract {
     private function _getLastPosition($menuID) {
         $select = $this->select();
         $select->where("menu_id = ?", $menuID);
-        $select->order('position DESC');
+        $select->order('position DESnew My_Model_MenuItem();C');
         $row = $this->fetchAll($select);
 
         if ($row) {
@@ -156,7 +156,7 @@ class My_Model_MenuItem extends Zend_Db_Table_Abstract {
     }
 
 
-       public function getMenuItemArray($menuID) {
+       public function getMenuItemArray($menuID, $baseURL = '') {
         $menuItems = $this->getItemsByMenu($menuID);
         $itemArray = array();
         if (count($menuItems) > 0) {
@@ -165,7 +165,7 @@ class My_Model_MenuItem extends Zend_Db_Table_Abstract {
                 if (!empty($item->link)) {
                     $uri = $item->link;
                 } else {
-                    $uri = '/page/open/id/' . $item->page_id;
+                    $uri = $baseURL . '/page/open/id/' . $item->page_id;
                 }
                 $itemArray[] = array(
                     'label' => $label,

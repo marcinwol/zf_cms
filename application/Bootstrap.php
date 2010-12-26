@@ -63,16 +63,24 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         //echo Zend_Debug::dump($router->getRoutes());
     }
 
-    protected function _initLayoutMenus() {
-       // $this->bootstrap('frontcontroller');
-       //  $this->_initAutoload();
+    protected function _initLayoutMenus() {              
+        $this->bootstrap('frontcontroller');
         $this->bootstrap('layout');
-       // $front = Zend_Controller_Front::getInstance();
-     //  $menuItemModel = new My_Model_MenuItem();
+        $this->bootstrap('db');
+        
+        $front = $this->getResource('frontcontroller');
         $layout = $this->getResource('layout');
-       // $layout->getView()->action('render','menu');
-        $layout->nav = "Main menu";
-        $layout->adminMenu = "Admin menu";
+        $baseUrl = $front->getBaseUrl();
+        
+       $menuItemModel = new My_Model_MenuItem();
+       $itemArray = $menuItemModel->getMenuItemArray(9,$baseUrl);
+       $itemArray2 = $menuItemModel->getMenuItemArray(8,$baseUrl);
+       $layout->nav =   $layout->getView()->navigation()->setContainer(
+               new Zend_Navigation($itemArray)
+               );
+       $layout->adminMenu =  $layout->getView()->navigation()->render(
+               new Zend_Navigation($itemArray2)
+               );
 
     }
 
