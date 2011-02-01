@@ -110,17 +110,8 @@ class UserController extends Zend_Controller_Action {
 
                 $data = $userForm->getValues();
 
-                // get the default ad adapter
-                $db = Zend_Db_Table::getDefaultAdapter();
-
-                // crate the auth adapter
-                $authAdapter = new Zend_Auth_Adapter_DbTable(
-                                $db, 'users', 'username', 'password'
-                );
-
-                // set the username and password
-                $authAdapter->setIdentity($data['username']);
-                $authAdapter->setCredential(md5($data['password']));
+                // get addapter
+                $authAdapter = $this->_getAuthAdapter($data);
 
                 // authenticate
                 $auth = Zend_Auth::getInstance();
@@ -129,7 +120,7 @@ class UserController extends Zend_Controller_Action {
                 if ($result->isValid()) {
                     $userData = $authAdapter->getResultRowObject(null, 'password');
                     $auth->getStorage()->write($userData);
-                    return $this->_redirect('index');
+                    return $this->_redirect('user/index');
                 } else {
                     $this->view->loginMessage = "Sorry, your username or password was incorrect";
                 }
@@ -137,6 +128,29 @@ class UserController extends Zend_Controller_Action {
         }
 
         $this->view->form = $userForm;
+    }
+
+    protected function _getAuthAdapter($data) {
+
+        // get the default ad adapter
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        // crate the auth adapter
+        $authAdapter = new Zend_Auth_Adapter_DbTable(
+                        $db, 'users', 'username', 'password'
+        );
+        $authAdapter->setCredentialTreatment('MD5(?)');
+
+        // set the username and password
+        $authAdapter->setIdentity($data['username']);
+        $authAdapter->setCredential($data['password']);
+
+        return $authAdapter;
+    }
+
+    public function logoutAction() {
+        $authAdapter = Zend_Auth::getInstance();
+        $authAdapter->clearIdentity();
     }
 
 }
