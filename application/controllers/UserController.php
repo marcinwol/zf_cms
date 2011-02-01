@@ -7,7 +7,10 @@ class UserController extends Zend_Controller_Action {
     }
 
     public function indexAction() {
-        // action body
+        $auth = Zend_Auth::getInstance();
+        if ($auth->hasIdentity()) {
+            $this->view->identity = $auth->getIdentity();
+        }
     }
 
     public function createAction() {
@@ -93,6 +96,47 @@ class UserController extends Zend_Controller_Action {
         $userModel = new My_Model_User();
         $userModel->deleteUser($id);
         return $this->_redirect('/user/list');
+    }
+
+    public function loginAction() {
+        $userForm = new My_Form_User();
+        $userForm->setAction($this->view->baseUrl('/user/login'));
+        $userForm->removeElement('first_name');
+        $userForm->removeElement('last_name');
+        $userForm->removeElement('role');
+
+        if ($this->getRequest()->isPost()) {
+            if ($userForm->isValid($_POST)) {
+
+                $data = $userForm->getValues();
+
+                // get the default ad adapter
+                $db = Zend_Db_Table::getDefaultAdapter();
+
+                // crate the auth adapter
+                $authAdapter = new Zend_Auth_Adapter_DbTable(
+                                $db, 'users', 'username', 'password'
+                );
+
+                // set the username and password
+                $authAdapter->setIdentity($data['username']);
+                $authAdapter->setCredential(md5($data['password']));
+
+                // authenticate
+                $auth = Zend_Auth::getInstance();
+                $result = $auth->authenticate($authAdapter);
+
+                if ($result->isValid()) {
+                    $userData = $authAdapter->getResultRowObject(null, 'password');
+                    $auth->getStorage()->write($userData);
+                    return $this->_redirect('index');
+                } else {
+                    $this->view->loginMessage = "Sorry, your username or password was incorrect";
+                }
+            }
+        }
+
+        $this->view->form = $userForm;
     }
 
 }

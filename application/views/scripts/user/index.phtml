@@ -1,1 +1,8 @@
-<br /><br /><center>View script for controller <b>User</b> and script/action name <b>index</b></center>
+<h2>My Account</h2>
+
+<?php if (null === $this->identity): ?>
+        <p>To log in <a href="<?php echo $this->baseUrl('/user/login');?>">click here</a></p>
+<?php else: ?>
+        <p>Welcome back <?php echo $this->identity->first_name; ?></p>
+        <p>To log out <a href="<?php echo $this->baseUrl('/user/logout');?>">click here</a></p>
+<?php endif; ?>

@@ -1,10 +1,8 @@
 <?php
 
-class IndexController extends Zend_Controller_Action
-{
+class IndexController extends Zend_Controller_Action {
 
-    public function init()
-    {
+    public function init() {
         /* Initialize action controller here */
     }
 
@@ -12,7 +10,6 @@ class IndexController extends Zend_Controller_Action
     {
         // action body
     }
-
 
 }
 
